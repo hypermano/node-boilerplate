@@ -1,0 +1,22 @@
+extends layout
+
+block content
+	- var reauth = queryParams && ('reauth' in queryParams); 
+	if reauth
+		div.alert.alert-danger
+			| Invalid username and/or password
+	div.row
+		form(action="#{path}", method="post", role="form")
+			div.col-md-4
+				div.row
+					div.form-group.input-group
+						span.input-group-addon
+							span.glyphicon.glyphicon-user
+						input.form-control(placeholder="Username", type="text", name="username", autofocus)
+				div.row
+					div.form-group.input-group
+						span.input-group-addon
+							span.glyphicon.glyphicon-exclamation-sign
+						input.form-control(placeholder="Password", type="password", name="password")
+						span.input-group-btn
+							button.btn.btn-default(type="submit")= submitText

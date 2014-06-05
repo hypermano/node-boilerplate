@@ -1,0 +1,59 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge')
+		meta(name='viewport' content='width=device-width', initial-scale='1')
+		meta(name='description' content='')
+    
+		title= title
+		link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+		script(src='/javascripts/jquery.min.js')
+		script(src='/javascripts/script.js')
+
+	body
+		div.container-fluid
+			div.row
+				div.col-md-3.header
+					if user
+						div.row
+							div.col-md-1
+								span.glyphicon.glyphicon-user
+							div.col-md-6
+								p= user
+				div.col-md-9
+					ul.nav.nav-pills.pull-right
+						li
+							a(href='/')
+								| Home
+						li
+							a(href='/about')
+								| About
+						li
+							if user
+								a(href='/logout')
+									| Logout
+							else
+								a(href='/login')
+									| Login
+						li
+							a(href='/register')
+								| Register
+			div.row
+				div.col-md-1.col-sm-1
+				div.col-md-8.col-sm-6
+					h1.text-muted= title
+			div.row
+				div.col-md-1.col-sm-1
+				div.col-md-8.col-sm-6
+					div.content
+					block content
+
+			div.row
+				div.col-md-6
+					div.footer
+						p
+							| &copy; 2014
+		
+		
+
