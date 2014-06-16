@@ -14,12 +14,12 @@
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
     "jade": "~1.3.0",
-    "mongodb": "*",
-    "jquery": "*",
-    "mongoose": "*",
-    "passport": "*",
-    "passport-local": "*",
-    "passport-local-mongoose": "*",
-    "express-session": "*"
+    "mongodb": "~1.4.6",
+    "jquery": "~2.1.1",
+    "mongoose": "~3.8.12",
+    "passport": "~0.2.0",
+    "passport-local": "~1.0.0",
+    "passport-local-mongoose": "~0.3.0",
+    "express-session": "~1.3.1"
   }
 }
