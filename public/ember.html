@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ember</title>
+	<script type="text/javascript" src="packages/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="packages/handlebars/handlebars.js"></script>
+	<script type="text/javascript" src="packages/ember/ember.js"></script>
+	<link rel="stylesheet" type="text/css" href="packages/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container" id="github-app">
+	</div>
+
+	<script type="text/x-handlebars" data-template-name="application" id="application">
+		<div class="row">
+			<div class="col-md-12">
+				{{outlet}}
+			</div>
+		</div>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="index">
+		<h1>Github Nameshub</h1>
+		<br/>
+		<p>This is a Github explorer for all your favorite developpers</p>
+		<ul>
+			{{#each}}
+			<li>{{#link-to 'user' this.login}}{{name}}{{/link-to}}</li>
+			{{/each}}
+		</ul>
+		<p>
+			<button class="btn btn-success" {{action "clickMe"}}>Click Me!</button>
+		</p>
+		<p>
+			{{renderedOn}}
+		</p>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="user">
+		<div class="row">
+			<div class="col-md-3 col-xs-3">
+				<div class="well">
+					<h3>{{name}}'s Github</h3>
+					<img {{bind-attr src=avatar_url}}/ style="width:95px">
+				</div>
+			</div>
+			<div class="col-md-8 col-xs-8">
+				{{outlet}}
+			</div>
+		</div>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="user/index">
+		<h3>{{name}}'s Github</h3>
+		<ul>
+			<li>{{#link-to 'alltips'}}Show Tips{{/link-to}}</li>
+			<li>{{#link-to 'user.newtip'}}Add Tip{{/link-to}}</li>
+		</ul>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="alltips">
+		<table class="table table-striped">
+			<tbody>
+				{{#each}}
+				<tr>
+					<td>{{message}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="user/newtip">
+		<h3>Add a Tip</h3>
+		<div class="form-group">
+			<label for="message">Message</label>
+			<input type="text" class="form-control" name="message" id="new-tip-message" placeholder="Your awesome tip">
+		</div>
+		<button class="btn btn-primary" {{action "submitTip"}}>Submit</button>
+	</script>
+		
+
+	<script>
+		var devs = [
+			{login:"robconery", name:"Rob Conery"},
+			{login:"shanselman", name:"Scott Hanselman"},
+			{login:"tomdale", name:"Tom Dale"},
+			{login:"wycats", name:"Yehuda Katz"}
+		];
+
+		window.Github = Ember.Application.create({
+			rootElement : "#github-app",
+			LOG_TRANSITIONS : true
+		});
+
+		Github.Router.map(function () {
+			this.resource("user", { path: "users/:login" }, function () {
+				this.resource("alltips");
+				this.route("newtip");
+			});
+		});
+
+		Github.IndexRoute = Ember.Route.extend({
+			model : function () {
+				return devs;
+			}
+		});
+
+		Github.UserRoute = Ember.Route.extend({
+			model : function (params) {
+				return Ember.$.getJSON("https://api.github.com/users/" + params.login);
+			}
+		});
+
+		Github.UserIndexRouter = Ember.Route.extend({
+			model : function () {
+				return this.modelFor('user');
+			}
+		});
+
+		Github.AlltipsRoute = Ember.Route.extend({
+			model: function () {
+				var user = this.modelFor('user');
+				return Ember.$.getJSON('users/alltips');
+			}
+		});
+
+		Github.IndexController = Ember.ArrayController.extend({
+			renderedOn : function () {
+				return new Date();
+			}.property(),
+			actions : {
+				clickMe : function () {
+					alert("I've been clicked");
+				}
+			}
+		});
+
+		Github.UserNewtipController = Ember.Controller.extend({
+			actions: {
+				submitTip: function () {
+					var msg = $("#new-tip-message").val();
+					controller = this;
+					Ember.$.post('/users/newtip', {message: msg}, function (result) {
+						controller.transitionToRoute("alltips");
+					});
+				}
+			}
+		});
+	</script>
+</body>
+</html>
