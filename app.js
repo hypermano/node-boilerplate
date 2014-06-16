@@ -29,15 +29,14 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'bower_components')));
 
 app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 // route setting
-app.use('/', routes);
 app.use('/users', users);
+app.use('/', routes);
 
 // passport config
 passport.use(new LocalStrategy(Account.authenticate()));

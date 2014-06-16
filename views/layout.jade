@@ -7,14 +7,14 @@ html
 		meta(name='description' content='')
     
 		title= title
-		link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
-		script(src='/jquery/dist/jquery.min.js')
+		link(rel='stylesheet', href='/packages/bootstrap/dist/css/bootstrap.min.css')
+		script(src='/packages/jquery/dist/jquery.min.js')
 		script(src='/javascripts/script.js')
 
 	body
-		div.container-fluid
+		div.container
 			div.row
-				div.col-md-3.header
+				div.col-md-3
 					if user
 						div.row
 							div.col-md-1
@@ -40,12 +40,12 @@ html
 							a(href='/register')
 								| Register
 			div.row
-				div.col-md-1.col-sm-1
-				div.col-md-8.col-sm-6
+				div.col-md-1
+				div.col-md-8
 					h1.text-muted= title
 			div.row
-				div.col-md-1.col-sm-1
-				div.col-md-8.col-sm-6
+				div.col-md-1
+				div.col-md-8
 					div.content
 					block content
 
