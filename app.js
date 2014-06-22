@@ -9,7 +9,7 @@ var session = require('express-session');
 var Account = require('./models/account');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var tips = require('./routes/tips');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -35,7 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // route setting
-app.use('/users', users);
+app.use('/tips', tips);
 app.use('/', routes);
 
 // passport config

@@ -13,9 +13,8 @@ router.get('/list', function (req, res) {
 });
 
 router.all('/newtip', function (req, res) {
-	if (req.body && req.body.message) {
-		var tip = new Tip({message: req.body.message});
-		tip.save();
+	if (req.body && req.body.details) {
+		Tip.add({details: req.body.details});
 		res.send('done');
 	} else {
 		res.send('failed');
@@ -25,11 +24,9 @@ router.all('/newtip', function (req, res) {
 router.get('/alltips', function (req, res) {
 	res.setHeader('Content-Type', 'application/json');
 
-	Tip.find({}, function(err, tips) {
+	Tip.all(function(err, tips) {
         res.send(tips);
     });
-
-	// res.end()
-})
+});
 
 module.exports = router;

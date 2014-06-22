@@ -1,8 +1,22 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Tip = new Schema({
-	message: String
-})
+var tipSchema = new Schema({
+	category: String,
+	details: String
+});
 
-module.exports = mongoose.model('Tip', Tip);
+tipSchema.statics.findByCategory = function(cat, callback) {
+	this.find({ category : cat}, callback);
+};
+
+tipSchema.statics.add = function(tip, callback) {
+	var newTip = mongoose.model('tips')(tip);
+	newTip.save(newTip, callback);
+};
+
+tipSchema.statics.all = function(callback) {
+	this.find({}, callback);
+};
+
+module.exports = mongoose.model('tips', tipSchema);
